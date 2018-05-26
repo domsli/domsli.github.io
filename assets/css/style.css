@@ -45,7 +45,7 @@ a {
   margin-left: 100px;
 }
 
-.terminal {
+#terminal {
   font-family: monospace;
   font-size: 10pt;
   margin-left: 50px;
@@ -54,7 +54,7 @@ a {
 
 .command-prompt, .response {
   position: relative;
-  display: inline-block;
+  display: block;
 
   /* Breaking the text */
   white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
@@ -91,7 +91,7 @@ a {
 }
 
 #cursor {
-  margin-left: -10px; /* tweak its position from text */
+  margin-left: -2px; /* tweak its position from text */
 
   /* Make the cursor not selectable */
   user-select: none;
