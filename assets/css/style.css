@@ -92,6 +92,13 @@ a {
 
 #cursor {
   margin-left: -10px; /* tweak its position from text */
+
+  /* Make the cursor not selectable */
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .blinking {
