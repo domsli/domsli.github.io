@@ -3,6 +3,7 @@
 <head>
   <title>Denis Li</title>
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script type="text/javascript" src="assets/js/main.js"></script>
 </head>
 <body>
 
@@ -19,7 +20,15 @@
 <hr>
 
 <div class="terminal">
-  <div class="command-pointer">visitor@domsli.github.io:~$</div>
+  <div class="command-container">
+    <div class="command-pointer">visitor@domsli.github.io:~$</div>
+    <div id="hello" class="command">Hi, there. My name is Denis. This is typing some kind of string here that looks really cool.</div>
+    <div class="cursor"></div>
+    <script type="text/javascript">
+    typing(document.getElementById("hello"));
+    </script>
+  </div>
+
 </div>
 
 </body>

@@ -61,6 +61,7 @@ a {
   position:relative;
   padding-left: 10px;
   padding-right: 10px;
+  float: left;
 }
 .command-pointer:before{
   content:"";
@@ -72,4 +73,22 @@ a {
   position:absolute;
   left:100%;
   top:0px;
+}
+
+.command {
+  display: inline-block;
+  white-space: nowrap;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 20px;
+  float: left;
+}
+
+.cursor {
+  display: inline-block;
+  width: 1px;
+  height: 17px;
+  line-height: 17px;
+  background-color: white;
+  float: left;
 }
