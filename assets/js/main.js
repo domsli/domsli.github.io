@@ -1,5 +1,6 @@
 $(document).ready(function() {
   terminalElem = $("#terminal");
+
   currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:~$");
   terminalElem.append(currentCommandPromptElem);
 
@@ -12,8 +13,21 @@ $(document).ready(function() {
       function() {
         index++;
         if (index != introSequenceCommands.length) {
+          // still doing the intro
           currentCursorElem.remove();
           setTimeout(showIntro, 500);
+        }
+        else {
+          // post-intro handling
+          currentCursorElem.remove();
+          var commandElem = currentCommandPromptElem.children(".command").first();
+          commandElem.attr("contenteditable", "true");
+          commandElem.focus();
+
+          terminalElem.click(function() {
+            var commandElem = currentCommandPromptElem.children(".command").first();
+            commandElem.focus();
+          });
         }
       });
     commandSequence();
@@ -84,7 +98,6 @@ var typeToCommandPrompt = function(text, callback=noop) {
   var commandElem = currentCommandPromptElem.children(".command").first();
   currentCursorElem = createCursorElem();
   currentCommandPromptElem.append(currentCursorElem);
-  commandElem.empty();
   numChars = 1;
   progress = 0;
   var timeout = 20;
