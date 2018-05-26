@@ -30,7 +30,7 @@ a {
   margin-right: 5px;
   padding-left: 20px;
   padding-right: 20px;
-  height: 60px;        /* if you want it to take the full height of the bar */
+  height: 60px;
   line-height: 60px;
 }
 
@@ -47,48 +47,59 @@ a {
 
 .terminal {
   font-family: monospace;
+  font-size: 10pt;
   margin-left: 50px;
+  margin-right: 50px;
 }
 
-.command-pointer{
+.command-prompt, .response {
+  position: relative;
+  display: inline-block;
+
+  /* Breaking the text */
+  white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: pre-wrap;       /* css-3 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+  word-break: break-all;
+  white-space: normal;
+}
+
+.prompt {
   display: inline-block;
   color: black;
   font-weight: bold;
   text-align:center;
   background-color: #0F0;
-  height:20px;
-  line-height:20px;
   position:relative;
   padding-left: 10px;
   padding-right: 10px;
-  float: left;
+  margin-right: 10px;
 }
-.command-pointer:before{
+
+.prompt:before {
   content:"";
   width:0px;
   height:0px;
-  border-top:10px solid transparent;
-  border-left:10px solid #0F0;
-  border-bottom:10px solid transparent;
+  border-top:8px solid transparent;
+  border-left:8px solid #0F0;
+  border-bottom:8px solid transparent;
   position:absolute;
   left:100%;
   top:0px;
 }
 
-.command {
-  display: inline-block;
-  white-space: nowrap;
-  height: 20px;
-  line-height: 20px;
-  margin-left: 20px;
-  float: left;
+#cursor {
+  margin-left: -10px; /* tweak its position from text */
 }
 
-.cursor {
-  display: inline-block;
-  width: 1px;
-  height: 17px;
-  line-height: 17px;
-  background-color: white;
-  float: left;
+.blinking {
+  animation: blink-caret 1s step-end infinite;
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { color: transparent }
+  50% { color: white; }
 }

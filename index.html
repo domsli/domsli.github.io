@@ -3,6 +3,7 @@
 <head>
   <title>Denis Li</title>
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <script type="text/javascript" src="assets/js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="assets/js/main.js"></script>
 </head>
 <body>
@@ -20,15 +21,15 @@
 <hr>
 
 <div class="terminal">
-  <div class="command-container">
-    <div class="command-pointer">visitor@domsli.github.io:~$</div>
-    <div id="hello" class="command">Hi, there. My name is Denis. This is typing some kind of string here that looks really cool.</div>
-    <div class="cursor"></div>
-    <script type="text/javascript">
-    typing(document.getElementById("hello"));
-    </script>
+  <div id="being-typed" class="command-prompt">
+    <span class="prompt">visitor@domsli.github.io:~$</span>
+    <span class="command"></span>
+    <span id="cursor">&boxv;</span>
   </div>
-
+  <script type="text/javascript">
+  typeToCommandPrompt($("#being-typed"), "Hi, there. My name is Denis. This is typing some kind of string here that looks really cool. Trying a really long string to see what will happen. A few more strings he is the coolest thing i have ever witnessed");
+  </script>
+  <div class="response">Hi, there. My name is Denis. This is typing some kind of string here that looks really cool. Trying a really long string to see what will happen. klfjsaklfjds lkfdsjaflkdsajfdsklfjdlkfjdslakfjdl32132832830 A few more strings he hi there buddy this is the greatest thing</div>
 </div>
 
 </body>
