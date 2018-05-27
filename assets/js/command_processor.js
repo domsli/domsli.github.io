@@ -19,15 +19,21 @@ var command_aboutme = function(arguments, flags) {
 };
 
 var command_viewresume = function(arguments, flags) {
-  // load the PDF to HTML
-  $(".grid").append(
-    "<object class='col-1-2' data='https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf' type='application/pdf' width='100%'' height='100%'>" +
-      "<p>It appears you dont have a PDF plugin for this browser." +
-      " No biggie... you can <a href='resume.pdf'>click here to" +
-      "download the PDF file.</a></p>" +
-    "</object>")
-  $("#terminal").addClass("col-1-2");
-  return "";
+  if ($("#resume").length) {
+    // resume already exists, so just return a response saying that it is open
+    return "Resume is already open."
+  }
+  else {
+    // load the PDF to HTML
+    $(".grid").append(
+      "<object id='resume' class='col-1-2' data='https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf' type='application/pdf' width='100%'' height='100%'>" +
+        "<p>It appears you dont have a PDF plugin for this browser." +
+        " No biggie... you can <a href='resume.pdf'>click here to" +
+        "download the PDF file.</a></p>" +
+      "</object>")
+    $("#terminal").addClass("col-1-2");
+    return "";
+  }
 };
 
 var command_viewprojects = function(arguments, flags) {
