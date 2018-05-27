@@ -60,6 +60,8 @@ hr {
 }
 
 #terminal {
+  max-height: 100%;
+  overflow-y: auto;
   font-family: monospace;
   font-size: 10pt;
   margin-left: 50px;
@@ -125,8 +127,36 @@ hr {
   50% { color: white; }
 }
 
+/* http://geon.github.io/programming/2016/02/24/flexbox-full-page-web-app-layout */
+
+/* A container using the flexbox layout. */
+.flex-container {
+  /*Container should flex*/
+  display: flex;
+
+  /*Set all direct children to NOT flex...*/
+  > * {
+    flex: 0 0 auto;
+  }  
+}
+
+/*...unless explicitly marked as stretchy.
+Obviously, you can do it the opposite way.*/
+.stretchy { 
+  flex: 1 1 auto;
+}
+
+/*The .flex-container can be a column instead of a row.*/
+.column {
+  flex-direction: column;
+}
+
 .grid {
-  flex: 1;
+  .flex-container;
+  .column;
+
+  /* For some reason, this is required to make children NOT flex... */
+  overflow: hidden;
 }
 
 [class*='col-'] {
