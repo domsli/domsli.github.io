@@ -14,7 +14,7 @@ a {
 html, body {
   display:flex;
   flex-direction:column;
-  height: 100%
+  height: 99%
 }
 
 /* https://stackoverflow.com/questions/34365271/hr-inside-container-with-display-flex-become-corrupted */
