@@ -8,8 +8,7 @@ $(document).ready(function() {
   var index = 0;
   var showIntro = function() {
     command = introSequenceCommands[index];
-    response = commandToResponse[command];
-    var commandSequence = createCommandSequence(command, response,
+    doAutomaticCommandSequence(command,
       function() {
         index++;
         if (index != introSequenceCommands.length) {
@@ -20,9 +19,7 @@ $(document).ready(function() {
         else {
           // post-intro handling
           currentCursorElem.remove();
-          var commandElem = currentCommandPromptElem.children(".command").first();
-          commandElem.attr("contenteditable", "true");
-          commandElem.focus();
+          setAsUserEditableCommandPrompt();
 
           terminalElem.click(function() {
             var commandElem = currentCommandPromptElem.children(".command").first();
@@ -30,7 +27,6 @@ $(document).ready(function() {
           });
         }
       });
-    commandSequence();
   }
   showIntro();
 });
@@ -47,20 +43,53 @@ var introSequenceCommands = [
   "howcanibecool"
 ];
 
-var commandToResponse = {
-  "whoami": "Hi there. My name is Denis. I am actually a really cool person. And I made this website, which is really cool",
-  "whatisthis": "This is some site I made",
-  "whyisthissocool": "Just because it is dude!",
-  "howcanibecool": "I don't know, just be a cooler guy",
+var processCommand = function(command, arguments, flags) {
+  // get response from command 
+  var response = getResponseFunction(command)();
+  // create a response element
+  var responseElem = createResponseElem(response);
+  terminalElem.append(responseElem);
+  // make the current command prompt no longer editable
+  unsetAsUserEditableCommandPrompt();
+  // create another prompt
+  currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:~$");
+  terminalElem.append(currentCommandPromptElem);
+  // set it as editable
+  setAsUserEditableCommandPrompt();
 };
 
-var createCommandSequence = function(command, response, callback) {
+var setAsUserEditableCommandPrompt = function() {
+  var commandElem = currentCommandPromptElem.children(".command").first();
+  commandElem.attr("contenteditable", "true");
+  commandElem.on("paste", function() {
+    // handle parsing the command(s) in case there are newlines
+  });
+  commandElem.on("keypress", function(e) {
+    if ((e.keyCode == 10 || e.keyCode == 13)) {
+      e.preventDefault();
+      processCommand(commandElem.html());
+    }
+  });
+  commandElem.focus();
+};
+
+var unsetAsUserEditableCommandPrompt = function() {
+  var commandElem = currentCommandPromptElem.children(".command").first();
+  commandElem.removeAttr("contenteditable");
+  commandElem.removeAttr("onpaste");
+  commandElem.removeAttr("onkeypress")
+  commandElem.focus();
+};
+
+var doAutomaticCommandSequence = function(command, callback) {
   var commandSequence = function() {
     typeToCommandPrompt(command,
       function() {
         // remove cursor
         currentCursorElem.remove();
-        // create response
+        // get the response from the command
+        var response = getResponseFunction(command)();
+        // create a response element
         var responseElem = createResponseElem(response);
         terminalElem.append(responseElem);
         // create another prompt
@@ -74,7 +103,7 @@ var createCommandSequence = function(command, response, callback) {
         });
       });
   };
-  return commandSequence;
+  commandSequence();
 };
 
 var createResponseElem = function(responseText) {
