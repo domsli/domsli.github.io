@@ -2,14 +2,6 @@ body {
   background-color: #1E1E1E;
 }
 
-* {
-  color: white;
-}
-
-a {
-  text-decoration: none;
-}
-
 /* https://stackoverflow.com/questions/35348057/css-div-fill-remaining-height */
 html, body {
   display:flex;
@@ -124,6 +116,17 @@ hr {
   height: calc(100% - 40px); /* -40px for margin and padding */
 }
 
+.html-view {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
+  max-height: 100%;
+  overflow-y: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: calc(100% - 40px); /* -40px for margin and padding */
+}
+
 .command-prompt, .response {
   position: relative;
   display: block;
@@ -136,6 +139,10 @@ hr {
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
   word-break: break-all;
   white-space: normal;
+}
+
+.response {
+  color: white;
 }
 
 .command {

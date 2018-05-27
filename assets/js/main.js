@@ -66,6 +66,9 @@ var clickLink = function(link_id, command) {
     doUserTriggeredAutomaticCommandSequence("closeviewer");
   }
   else {
+    if ($(".selected-link").length) {
+      command_closeviewer(); // can just call the command and ignore its response
+    }
     doUserTriggeredAutomaticCommandSequence(command);
   }
 };

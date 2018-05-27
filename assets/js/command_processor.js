@@ -54,8 +54,34 @@ var command_closeviewer = function(arguments, flags) {
   }
 }
 
+var loadingProjects = false;
+
 var command_viewprojects = function(arguments, flags) {
-  return "[...display some projects...]";
+  if ($("#projects").length) {
+    return "Projects is already open.";
+  }
+  // Make sure to disallow the user from loading the projects at the same time
+  if (loadingProjects) {
+    return "Currently loading the project...";
+  }
+  loadingProjects = true;
+  $.ajax({
+    type: 'GET',
+    url: 'assets/res/projects_partial.html',
+    dataType: 'text',
+    success: function(text) {
+      // create the viewer
+      var projectsElem = $(text);
+      projectsElem.attr("id", "projects");
+      projectsElem.addClass("col-1-2 ui-view html-view");
+      $(".grid").append(projectsElem);
+      $("#terminal").addClass("col-1-2");
+      // set the link as selected
+      setLinkAsSelected($("#projects-link"));
+      loadingProjects = false;
+    },
+  });
+  return "";
 };
 
 var command_contacthost = function(arguments, flags) {
