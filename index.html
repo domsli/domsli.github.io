@@ -12,16 +12,18 @@
 <nav class="navigation-bar">
   <h1>Denis Li</h1>
   <ul class="menu-right">
-    <a href="#">About Me</a>
-    <a href="#">Resume</a>
-    <a href="#">Projects</a>
-    <a onclick="doUserTriggeredAutomaticCommandSequence('contacthost')" href="#">Contact</a>
+    <span onclick="doUserTriggeredAutomaticCommandSequence('aboutme')">About Me</span>
+    <span onclick="doUserTriggeredAutomaticCommandSequence('viewresume')">Resume</span>
+    <span onclick="doUserTriggeredAutomaticCommandSequence('viewprojects')">Projects</span>
+    <span onclick="doUserTriggeredAutomaticCommandSequence('contacthost')">Contact</span>
   </ul>
 </nav>
 
 <hr>
 
-<div id="terminal">
+<div class="grid">
+  <div id="terminal">
+  </div>
 </div>
 
 </body>

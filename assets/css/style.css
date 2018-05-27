@@ -10,6 +10,19 @@ a {
   text-decoration: none;
 }
 
+/* https://stackoverflow.com/questions/35348057/css-div-fill-remaining-height */
+html, body {
+  display:flex;
+  flex-direction:column;
+  height: 100%
+}
+
+/* https://stackoverflow.com/questions/34365271/hr-inside-container-with-display-flex-become-corrupted */
+hr {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .navigation-bar {
   font-family: sans-serif;
   width: 100%;
@@ -22,7 +35,7 @@ a {
   margin-right: 20px;
   margin-left: 100px;
 }
-.navigation-bar a {
+.navigation-bar span {
   display: inline-block;
   vertical-align: center;
   border-radius: 5px;
@@ -34,7 +47,8 @@ a {
   line-height: 60px;
 }
 
-.navigation-bar a:hover {
+.navigation-bar span:hover {
+  cursor: pointer;
   background-color: black;
   color: #d3d3d3;
 }
@@ -109,4 +123,16 @@ a {
 @keyframes blink-caret {
   from, to { color: transparent }
   50% { color: white; }
+}
+
+.grid {
+  flex: 1;
+}
+
+[class*='col-'] {
+  float: left;
+}
+
+.col-1-2 {
+  width: 45%;
 }
