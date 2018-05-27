@@ -40,18 +40,23 @@ var command_viewresume = function(arguments, flags) {
 
 var command_closeviewer = function(arguments, flags) {
   if ($(".ui-view").length) {
-    // close the viewer
-    $(".ui-view").remove();
+    closeViewerOnlyWithoutResizingTerminal();
     $("#terminal").removeClass("col-1-2");
-    // deselect the link if it exists
-    if ($(".selected-link").length) {
-      unsetSelected();
-    }
     return "";
   }
   else {
     return "There is no viewer to close.";
   }
+}
+
+var closeViewerOnlyWithoutResizingTerminal = function() {
+  // close the viewer
+  $(".ui-view").remove();
+  // deselect the link if it exists
+  if ($(".selected-link").length) {
+    unsetSelected();
+  }
+  return "";
 }
 
 var loadingProjects = false;

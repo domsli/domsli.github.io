@@ -67,7 +67,7 @@ var clickLink = function(link_id, command) {
   }
   else {
     if ($(".selected-link").length) {
-      command_closeviewer(); // can just call the command and ignore its response
+      closeViewerOnlyWithoutResizingTerminal();
     }
     doUserTriggeredAutomaticCommandSequence(command);
   }
