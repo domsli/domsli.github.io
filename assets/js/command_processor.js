@@ -26,15 +26,33 @@ var command_viewresume = function(arguments, flags) {
   else {
     // load the PDF to HTML
     $(".grid").append(
-      "<object id='resume' class='col-1-2' data='https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf' type='application/pdf' width='100%'' height='100%'>" +
+      "<object id='resume' class='col-1-2 ui-view' data='https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf' type='application/pdf' width='100%'' height='100%'>" +
         "<p>It appears you dont have a PDF plugin for this browser." +
         " No biggie... you can <a href='resume.pdf'>click here to" +
         "download the PDF file.</a></p>" +
       "</object>")
     $("#terminal").addClass("col-1-2");
+    // Set the resume link as selected
+    setLinkAsSelected($("#resume-link"));
     return "";
   }
 };
+
+var command_closeviewer = function(arguments, flags) {
+  if ($(".ui-view").length) {
+    // close the viewer
+    $(".ui-view").remove();
+    $("#terminal").removeClass("col-1-2");
+    // deselect the link if it exists
+    if ($(".selected-link").length) {
+      unsetSelected();
+    }
+    return "";
+  }
+  else {
+    return "There is no viewer to close.";
+  }
+}
 
 var command_viewprojects = function(arguments, flags) {
   return "[...display some projects...]";
@@ -53,6 +71,7 @@ var commandToResponse = {
   "viewresume": command_viewresume,
   "viewprojects": command_viewprojects,
   "contacthost": command_contacthost,
+  "closeviewer": command_closeviewer,
 };
 
 var getResponseFunction = function(command) {
@@ -64,4 +83,15 @@ var getResponseFunction = function(command) {
       return "No command '" + command + "' found."
     };
   }
+};
+
+var setLinkAsSelected = function(linkElem) {
+  linkElem.addClass("selected-link");
+  var closeButtonHtmlString = "<img class='close-button' src='assets/res/close_symbol.png' style='position:absolute; top: 5px; right: 5px; height:20px;'/>";
+  linkElem.html(linkElem.html() + closeButtonHtmlString);
+};
+
+var unsetSelected = function() {
+  $(".selected-link img").remove();
+  $(".selected-link").removeClass("selected-link");
 };

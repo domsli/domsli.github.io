@@ -60,6 +60,16 @@ var processCommand = function(command, arguments, flags) {
   setAsUserEditableCommandPrompt();
 };
 
+var clickLink = function(link_id, command) {
+  var linkElem = $("#" + link_id);
+  if (linkElem.hasClass("selected-link")) {
+    doUserTriggeredAutomaticCommandSequence("closeviewer");
+  }
+  else {
+    doUserTriggeredAutomaticCommandSequence(command);
+  }
+};
+
 var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags) {
   if (!finishedIntro) {
     // show popup warning to let the user know they cannot do anything

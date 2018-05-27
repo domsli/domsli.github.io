@@ -67,7 +67,7 @@ hr {
   margin-left: 100px;
 }
 .navigation-bar span {
-  color: chocolate;
+  position: relative;
   display: inline-block;
   vertical-align: center;
   border-radius: 5px;
@@ -77,12 +77,30 @@ hr {
   padding-right: 20px;
   height: 60px;
   line-height: 60px;
+  width: 100px;
+  text-align: center;
+}
+
+.navigation-bar span:not(.selected-link) {
+  color: chocolate;
 }
 
 .navigation-bar span:hover {
   cursor: pointer;
+}
+
+.navigation-bar span:not(.selected-link):hover {
   background-color: black;
   color: orange;
+}
+
+.selected-link {
+  background-color: chocolate;
+  color: black;
+}
+
+.selected-link:hover {
+  font-weight: bold;
 }
 
 .menu-right {

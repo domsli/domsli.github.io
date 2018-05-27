@@ -12,10 +12,10 @@
 <nav class="navigation-bar">
   <h1>Denis Li</h1>
   <ul class="menu-right">
-    <span onclick="doUserTriggeredAutomaticCommandSequence('aboutme')">About Me</span>
-    <span onclick="doUserTriggeredAutomaticCommandSequence('viewresume')">Resume</span>
-    <span onclick="doUserTriggeredAutomaticCommandSequence('viewprojects')">Projects</span>
-    <span onclick="doUserTriggeredAutomaticCommandSequence('contacthost')">Contact</span>
+    <span id="aboutme-link" onclick="doUserTriggeredAutomaticCommandSequence('aboutme')">About Me</span>
+    <span id="resume-link" onclick="clickLink('resume-link', 'viewresume')">Resume</span>
+    <span id="projects-link" onclick="doUserTriggeredAutomaticCommandSequence('viewprojects')">Projects</span>
+    <span id="contact-link" onclick="doUserTriggeredAutomaticCommandSequence('contacthost')">Contact</span>
   </ul>
 </nav>
 
