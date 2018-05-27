@@ -23,6 +23,34 @@ hr {
   margin-right: 0;
 }
 
+#stop-intro {
+  display: table;
+  /* fix position on screen*/
+  position: fixed;
+  top: 40%;
+  /* horizontally center */
+  width: 50%;
+  margin-left: calc(25%);
+  /* decorate the filling */
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: red;
+  background-color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /* decorate the text */
+  font-family: sans-serif;
+  font-size: 20pt;
+  text-align: center;
+}
+
+#stop-intro > * {
+  display: table-cell;
+  vertical-align: middle;
+  color: black;
+}
+
 .navigation-bar {
   font-family: monospace;
   font-size: 14pt;

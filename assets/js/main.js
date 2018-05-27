@@ -25,6 +25,7 @@ $(document).ready(function() {
             var commandElem = currentCommandPromptElem.children(".command").first();
             commandElem.focus();
           });
+          finishedIntro = true;
         }
       });
   }
@@ -35,6 +36,7 @@ $(document).ready(function() {
 var terminalElem = null;
 var currentCursorElem = null;
 var currentCommandPromptElem = null;
+var finishedIntro = false;
 
 var introSequenceCommands = [
   "whoami",
@@ -59,6 +61,16 @@ var processCommand = function(command, arguments, flags) {
 };
 
 var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags) {
+  if (!finishedIntro) {
+    // show popup warning to let the user know they cannot do anything
+    var stopIntroElem = $("#stop-intro");
+    stopIntroElem.show();
+    setTimeout(function() {
+      stopIntroElem.fadeOut("slow");
+    }, 100);
+    // do not let the user do anything if intro not finished
+    return;
+  }
   var commandElem = currentCommandPromptElem.children(".command").first();
   commandElem.html(command);
   processCommand(command, arguments, flags);
