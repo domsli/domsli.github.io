@@ -58,6 +58,12 @@ var processCommand = function(command, arguments, flags) {
   setAsUserEditableCommandPrompt();
 };
 
+var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags) {
+  var commandElem = currentCommandPromptElem.children(".command").first();
+  commandElem.html(command);
+  processCommand(command, arguments, flags);
+};
+
 var setAsUserEditableCommandPrompt = function() {
   var commandElem = currentCommandPromptElem.children(".command").first();
   commandElem.attr("contenteditable", "true");

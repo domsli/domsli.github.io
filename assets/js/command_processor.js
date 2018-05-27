@@ -11,7 +11,11 @@ var command_whyisthissocool = function(arguments, flags) {
 };
 
 var command_howcanibecool = function(arguments, flags) {
-  return "I don't know, just be a cooler guy"
+  return "I don't know, just be a cooler guy";
+};
+
+var command_contacthost = function(arguments, flags) {
+  return "School: denisli@mit.edu<br>Personal: denisli268@gmail.com";
 };
 
 var commandToResponse = {
@@ -19,6 +23,7 @@ var commandToResponse = {
   "whatisthis": command_whatisthis,
   "whyisthissocool": command_whyisthissocool,
   "howcanibecool": command_howcanibecool,
+  "contacthost": command_contacthost,
 };
 
 var getResponseFunction = function(command) {
