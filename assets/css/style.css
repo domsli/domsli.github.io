@@ -60,12 +60,18 @@ hr {
 }
 
 #terminal {
+  background-color: black;
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
   max-height: 100%;
   overflow-y: auto;
   font-family: monospace;
   font-size: 10pt;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 40px;
+  margin-right: 40px;
+  height: calc(100% - 40px); /* -40px for margin and padding */
 }
 
 .command-prompt, .response {
@@ -80,6 +86,10 @@ hr {
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
   word-break: break-all;
   white-space: normal;
+}
+
+.command {
+  color: yellow;
 }
 
 .prompt {
@@ -154,6 +164,7 @@ Obviously, you can do it the opposite way.*/
 .grid {
   .flex-container;
   .column;
+  height: 100%;
 
   /* For some reason, this is required to make children NOT flex... */
   overflow: hidden;
