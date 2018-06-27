@@ -1,3 +1,11 @@
+var command_touch = function(arguments, flags) {
+  return "Permission denied: no write access.";
+};
+
+var command_mkdir = function(arguments, flags) {
+  return "Permission denied: no write access.";
+};
+
 var command_clear = function(arguments, flags) {
   $("#terminal").empty();
   return "";
@@ -174,6 +182,8 @@ var command_contact = function(arguments, flags) {
 };
 
 var commandToResponse = {
+  "touch": command_touch,
+  "mkdir": command_mkdir,
   "open": command_open,
   "clear": command_clear,
   "ls": command_ls,
