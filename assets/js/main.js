@@ -59,13 +59,13 @@ var processCommand = function(command, arguments, flags) {
   setAsUserEditableCommandPrompt();
 };
 
-var clickLink = function(link_id, command) {
+var clickLink = function(link_id, filePath) {
   var linkElem = $("#" + link_id);
   if (linkElem.hasClass("selected-link")) {
     doUserTriggeredAutomaticCommandSequence("closeviewer");
   }
   else {
-    doUserTriggeredAutomaticCommandSequence(command);
+    doUserTriggeredAutomaticCommandSequence("open", [filePath,]);
   }
 };
 
@@ -81,7 +81,8 @@ var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags
     return;
   }
   var commandElem = currentCommandPromptElem.children(".command").first();
-  commandElem.html(command);
+  var argumentString = arguments ? " " + arguments.join(" ") : "";
+  commandElem.html(command + argumentString);
   processCommand(command, arguments, flags);
 };
 

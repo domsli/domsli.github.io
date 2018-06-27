@@ -33,6 +33,9 @@ var command_ls = function(arguments, flags) {
 };
 
 var command_cd = function(arguments, flags) {
+  if (arguments.length == 0) {
+    return "";
+  }
   var relativePath = arguments[0];
   relativePath = relativePath.replace(/\/+$/, "");
   var splitPath = relativePath.split(/\/+/);
@@ -53,60 +56,92 @@ var command_greeting = function(arguments, flags) {
   return "Hi there! I'm Denis. Welcome to my personal website.";
 };
 
-var loadingAboutMe = false;
-
-var command_aboutme = function(arguments, flags) {
-  if ($("#aboutme").length) {
-    return "About Me is already open.";
+var command_open = function(arguments, flags) {
+  var relativePath = arguments[0];
+  relativePath = relativePath.replace(/\/+$/, "");
+  var splitPath = relativePath.split(/\/+/);
+  var fileData = DIRECTORY_TREE.getFile(splitPath);
+  if (!fileData) {
+    return "Could not open file: " + relativePath;
   }
-  // Make sure to disallow the user from loading the projects at the same time
-  if (loadingAboutMe) {
-    return "Currently loading the About Me...";
+  var alias = fileData.alias; // should really be the same as relativePath
+  if (alias.length > 4 && alias.substring(alias.length-4) == ".pdf") {
+    return openPDF(fileData);
   }
-  loadingAboutMe = true;
-  $.ajax({
-    type: 'GET',
-    url: 'assets/res/aboutme_partial.html',
-    dataType: 'text',
-    success: function(text) {
-      // clean up existing opened viewer
-      if ($(".selected-link").length) {
-        closeViewerOnlyWithoutResizingTerminal();
-      }
-      // create the viewer
-      var aboutMeElem = $(text);
-      aboutMeElem.attr("id", "aboutme");
-      aboutMeElem.addClass("col-1-2 ui-view html-view");
-      $(".grid").append(aboutMeElem);
-      $("#terminal").addClass("col-1-2");
-      // set the link as selected
-      setLinkAsSelected($("#aboutme-link"));
-      loadingAboutMe = false;
-    },
-  });
-  return "";
+  else if (alias.length > 5 && alias.substring(alias.length-5) == ".html") {
+    return openHTML(fileData);
+  }
+  return "Could not open file: " + alias;
 };
 
-var command_viewresume = function(arguments, flags) {
-  if ($("#resume").length) {
-    // resume already exists, so just return a response saying that it is open
-    return "Resume is already open."
+var loadingTextFile = false;
+
+var openHTML = function(fileData) {
+  if ($("#" + fileData.htmlID).length) {
+    // already open, so just return a response saying that
+    return fileData.alias + " is already open.";
   }
   else {
-    // clean up existing opened viewer
-    if ($(".selected-link").length) {
+    // clean up the existing open viewer
+    if ($(".ui-view").length) {
+      closeViewerOnlyWithoutResizingTerminal();
+    }
+    // Make sure to disallow the user from loading the projects at the same time
+    if (loadingTextFile) {
+      return "Currently loading a file already...";
+    }
+    loadingTextFile = true;
+    $.ajax({
+      type: 'GET',
+      url: fileData.actualFile,
+      dataType: 'text',
+      success: function(text) {
+        // clean up existing opened viewer
+        if ($(".ui-view").length) {
+          closeViewerOnlyWithoutResizingTerminal();
+        }
+        // create the viewer
+        var htmlElem = $(text);
+        htmlElem.attr("id", fileData.htmlID);
+        htmlElem.addClass("col-1-2 ui-view html-view");
+        $(".grid").append(htmlElem);
+        $("#terminal").addClass("col-1-2");
+        // set the link as selected
+        setLinkAsSelected($("#" + fileData.linkID));
+        loadingTextFile = false;
+      },
+      error: function(err) {
+        loadingTextFile = false;
+      }
+    });
+    return "";
+  }
+};
+
+var openPDF = function(fileData) {
+  if ($("#" + fileData.htmlID).length) {
+    // already open, so just return a response saying that
+    return fileData.alias + " is already open.";
+  }
+  else {
+    // clean up the existing open viewer
+    if ($(".ui-view").length) {
       closeViewerOnlyWithoutResizingTerminal();
     }
     // load the PDF to HTML
     $(".grid").append(
-      "<object id='resume' class='col-1-2 ui-view' data='https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf' type='application/pdf' width='100%'' height='100%'>" +
+      "<object id='" + fileData.htmlID + "' class='col-1-2 ui-view' data='" + 
+        fileData.actualFile + "' type='application/pdf' width='100%'' height='100%'>" +
         "<p>It appears you dont have a PDF plugin for this browser." +
         " No biggie... you can <a href='resume.pdf'>click here to" +
         "download the PDF file.</a></p>" +
       "</object>")
+    // shrink the terminal
     $("#terminal").addClass("col-1-2");
-    // Set the resume link as selected
-    setLinkAsSelected($("#resume-link"));
+    // Set the link as selected if it exists
+    if (fileData.linkID) {
+      setLinkAsSelected($("#" + fileData.linkID));
+    }
     return "";
   }
 };
@@ -132,40 +167,6 @@ var closeViewerOnlyWithoutResizingTerminal = function() {
   return "";
 }
 
-var loadingProjects = false;
-
-var command_viewprojects = function(arguments, flags) {
-  if ($("#projects").length) {
-    return "Projects is already open.";
-  }
-  // Make sure to disallow the user from loading the projects at the same time
-  if (loadingProjects) {
-    return "Currently loading the project...";
-  }
-  loadingProjects = true;
-  $.ajax({
-    type: 'GET',
-    url: 'assets/res/projects_partial.html',
-    dataType: 'text',
-    success: function(text) {
-      // clean up existing opened viewer
-      if ($(".selected-link").length) {
-        closeViewerOnlyWithoutResizingTerminal();
-      }
-      // create the viewer
-      var projectsElem = $(text);
-      projectsElem.attr("id", "projects");
-      projectsElem.addClass("col-1-2 ui-view html-view");
-      $(".grid").append(projectsElem);
-      $("#terminal").addClass("col-1-2");
-      // set the link as selected
-      setLinkAsSelected($("#projects-link"));
-      loadingProjects = false;
-    },
-  });
-  return "";
-};
-
 var command_contact = function(arguments, flags) {
   return "You can reach me via:" + "<br>" +
     "<a href='mailto:denisli268@gmail.com' target='_top'>&emsp;email</a>" + "<br>" +
@@ -173,14 +174,12 @@ var command_contact = function(arguments, flags) {
 };
 
 var commandToResponse = {
+  "open": command_open,
   "clear": command_clear,
   "ls": command_ls,
   "cd": command_cd,
   "whoami": command_whoami,
   "greeting": command_greeting,
-  "aboutme": command_aboutme,
-  "viewresume": command_viewresume,
-  "viewprojects": command_viewprojects,
   "contact": command_contact,
   "closeviewer": command_closeviewer,
 };

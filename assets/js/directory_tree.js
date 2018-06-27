@@ -78,7 +78,6 @@ var Tree = function(root) {
     var savedCurrentNode = self.currentNode;
     var isDirectory = self.changeDirectory(path);
     if (isDirectory) {
-      self.currentNode.children.sort(); // modifies it, but no problem
       var fileNames = self.currentNode.children.map(child => child.name);
       var isDirectoryList = self.currentNode.children.map(child => !child.actualFile);
       self.currentNode = savedCurrentNode;
@@ -88,15 +87,40 @@ var Tree = function(root) {
     return null;
   };
 
+  this.getFile = function(path) {
+    var savedCurrentNode = self.currentNode;
+    var isDirectory = self.changeDirectory(path.slice(0, path.length-1));
+    if (isDirectory) {
+      var fileName = path[path.length-1];
+      for (var i = 0; i < self.currentNode.children.length; i++) {
+        var child = self.currentNode.children[i];
+        if (child.name == fileName && child.actualFile) {
+          var fileData = {
+            alias: path.join("/"),
+            actualFile: child.actualFile,
+            htmlID: child.htmlID,
+            linkID: child.linkID,
+          };
+          self.currentNode = savedCurrentNode;
+          return fileData;
+        }
+      }
+    }
+    self.currentNode = savedCurrentNode;
+    return null;
+  };
+
   return this;
 };
 
-var TreeNode = function(name, actualFile=null) {
+var TreeNode = function(name, actualFile=null, htmlID=null, linkID=null) {
   var self = this;
 
   this.parent = null;
   this.name = name;
   this.actualFile = actualFile;
+  this.htmlID = htmlID; // only used to ID the html when opening the file
+  this.linkID = linkID; // only used to get the ID of the corresponding link, if it exists
   this.children = [];
 
   this.addChild = function(node) {
@@ -116,12 +140,16 @@ DIRECTORY_TREE = new Tree(root);
 
 // second level
 var projectsDir = new TreeNode("projects");
-var aboutMeFile = new TreeNode("aboutme.html", "assets/res/aboutme_partial.html");
+var aboutMeFile = new TreeNode("aboutme.html", "assets/res/aboutme_partial.html", "aboutme", "aboutme-link");
+var projectsFile = new TreeNode("projects.html", "assets/res/projects_partial.html", "projects", "projects-link");
+var resumeFile = new TreeNode("resume.pdf", "https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf", "resume", "resume-link");
 
 root.addChild(projectsDir);
 root.addChild(aboutMeFile);
+root.addChild(projectsFile);
+root.addChild(resumeFile);
 
 // third level
-var starlogoFile = new TreeNode("starlogo.html", "assets/res/starlogo_partial.html");
+var starlogoFile = new TreeNode("starlogo.html", "assets/res/starlogo_partial.html", "starlogo");
 
 projectsDir.addChild(starlogoFile);
