@@ -86,6 +86,7 @@ var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags
   processCommand(command, arguments, flags);
 };
 
+var consecutiveTabbedTimesWithMultipleSuggestions = 0;
 var setAsUserEditableCommandPrompt = function() {
   var commandElem = currentCommandPromptElem.children(".command").first();
   commandElem.attr("contenteditable", "true");
@@ -94,7 +95,7 @@ var setAsUserEditableCommandPrompt = function() {
     // handle parsing the command(s) in case there are newlines
   });
   commandElem.on("keypress", function(e) {
-    if ((e.keyCode == 10 || e.keyCode == 13)) {
+    if ((e.keyCode == 10 || e.keyCode == 13)) { // enter
       e.preventDefault();
       var fullCommand = commandElem.html();
       fullCommand = fullCommand.replace(/&nbsp;/gi, " "); // replace since html() converts space to &nbsp sometimes
@@ -103,10 +104,139 @@ var setAsUserEditableCommandPrompt = function() {
       var command = args[0];
       var arguments = args.slice(1);
       processCommand(command, arguments);
+      consecutiveTabbedTimesWithMultipleSuggestions = 0;
+    }
+    else if (e.keyCode == 9) { // tab
+      e.preventDefault();
+      var fullCommand = commandElem.html();
+      fullCommand = fullCommand.replace(/&nbsp;/gi, " "); // replace since html() converts space to &nbsp sometimes
+      // don't trim the spaces, we care about them here
+      var suggestions = getAutocompleteSuggestions(fullCommand);
+      // no suggestions means we should do nothing
+      if (suggestions.length == 0) {
+        consecutiveTabbedTimesWithMultipleSuggestions = 0;
+        // no-op
+      }
+      // one suggestion means we should apply the suggestion
+      else if (suggestions.length == 1) {
+        consecutiveTabbedTimesWithMultipleSuggestions = 0;
+        var suggestion = suggestions[0];
+        var newFullCommand;
+        // if the last character is a space, then we just append the suggestion on
+        if (fullCommand[fullCommand.length-1] == " ") {
+          newFullCommand = fullCommand + suggestion;
+        }
+        // if the last character is not a space, then we replace it with the suggestion
+        else {
+          // get substring of full command without the last word
+          var i;
+          for (i = fullCommand.length-1; i >= 0; i--) {
+            if (fullCommand[i] == " " || fullCommand[i] == "/") break;
+          }
+          newFullCommand = fullCommand.substring(0, i+1) + suggestion;
+        }
+        // set the new command
+        commandElem.html(newFullCommand);
+        placeCaretAtEnd(commandElem[0]); // [0] to get HTML DOM element from JQuery Object
+      }
+      // many suggestions means that we should list them out
+      else {
+        consecutiveTabbedTimesWithMultipleSuggestions++;
+        // only tabbed once
+        if (consecutiveTabbedTimesWithMultipleSuggestions == 1) {
+          // get the last word
+          var lastWord = getLastWordInFullCommand(fullCommand);
+          // update to largest prefix, if possible
+          var largestPrefix = getLargestPrefix(suggestions);
+          // no update if the prefix is the last word
+          if (largestPrefix == lastWord) {
+            // no-op
+          }
+          // there is an update if the prefix is not same as last word
+          else {
+            // update the command
+            newFullCommand = fullCommand.substring(0, fullCommand.length - lastWord.length) + largestPrefix;
+            commandElem.html(newFullCommand);
+            placeCaretAtEnd(commandElem[0]);
+            // reset tabbed times
+            consecutiveTabbedTimesWithMultipleSuggestions = 0;
+          }
+        }
+        // more than once, so show suggestions
+        else {
+          // unset this command prompt as editable
+          unsetAsUserEditableCommandPrompt();
+          // create a response with the list of suggestions
+          var suggestionsResp = suggestions.join("<br>");
+          var responseElem = createResponseElem(suggestionsResp);
+          terminalElem.append(responseElem);
+          // create another prompt
+          var currentDir = DIRECTORY_TREE.currentDirectory();
+          currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:" + currentDir + "$");
+          terminalElem.append(currentCommandPromptElem);
+          // set it as editable
+          var newCommandElem = currentCommandPromptElem.children(".command").first();
+          newCommandElem.html(fullCommand);
+          setAsUserEditableCommandPrompt(); // this will also place the caret at the end
+        }
+      }
+    }
+    else {
+      consecutiveTabbedTimesWithMultipleSuggestions = 0;
     }
   });
-  commandElem.focus();
+  placeCaretAtEnd(commandElem[0]);
 };
+
+var getLastWordInFullCommand = function(fullCommand) {
+  var i;
+  for (i = fullCommand.length-1; i >= 0; i--) {
+    if (fullCommand[i] == " " || fullCommand[i] == "/") break;
+  }
+  return fullCommand.substring(i+1);
+};
+
+var getLargestPrefix = function(words) {
+  var largestMatchIndex = 0;
+  var index = 0;
+  while (true) {
+    var ch = words[0][index];
+    for (var i = 0; i < words.length; i++) {
+      var word = words[i];
+      if (word.length <= i) {
+        return word.substring(0, largestMatchIndex+1);
+      }
+      else {
+        if (word[index] != ch) {
+          return word.substring(0, largestMatchIndex+1);
+        }
+      }
+    }
+    largestMatchIndex = index;
+    index++;
+  }
+  // should not get here
+};
+
+/* https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser */
+// Note that el should be an HTML DOM element, not a JQuery object
+var placeCaretAtEnd = function(el) {
+  el.focus();
+  if (typeof window.getSelection != "undefined"
+        && typeof document.createRange != "undefined") {
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else if (typeof document.body.createTextRange != "undefined") {
+    var textRange = document.body.createTextRange();
+    textRange.moveToElementText(el);
+    textRange.collapse(false);
+    textRange.select();
+  }
+}
 
 var unsetAsUserEditableCommandPrompt = function() {
   var commandElem = currentCommandPromptElem.children(".command").first();
