@@ -45,7 +45,7 @@ var introSequenceCommands = [
 
 var processCommand = function(command, arguments, flags) {
   // get response from command 
-  var response = getResponseFunction(command)();
+  var response = getResponseFunction(command)(arguments, flags);
   // create a response element
   var responseElem = createResponseElem(response);
   terminalElem.append(responseElem);
@@ -87,13 +87,20 @@ var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags
 var setAsUserEditableCommandPrompt = function() {
   var commandElem = currentCommandPromptElem.children(".command").first();
   commandElem.attr("contenteditable", "true");
+  commandElem.attr("spellcheck", "false");
   commandElem.on("paste", function() {
     // handle parsing the command(s) in case there are newlines
   });
   commandElem.on("keypress", function(e) {
     if ((e.keyCode == 10 || e.keyCode == 13)) {
       e.preventDefault();
-      processCommand(commandElem.html());
+      var fullCommand = commandElem.html();
+      fullCommand = fullCommand.replace(/&nbsp;/gi, " "); // replace since html() converts space to &nbsp sometimes
+      fullCommand = $.trim(fullCommand);
+      var args = fullCommand.split(/\s+/);
+      var command = args[0];
+      var arguments = args.slice(1);
+      processCommand(command, arguments);
     }
   });
   commandElem.focus();
@@ -102,6 +109,7 @@ var setAsUserEditableCommandPrompt = function() {
 var unsetAsUserEditableCommandPrompt = function() {
   var commandElem = currentCommandPromptElem.children(".command").first();
   commandElem.removeAttr("contenteditable");
+  commandElem.removeAttr("spellcheck");
   commandElem.removeAttr("onpaste");
   commandElem.removeAttr("onkeypress")
   commandElem.focus();

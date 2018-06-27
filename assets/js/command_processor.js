@@ -1,3 +1,29 @@
+var command_ls = function(arguments, flags) {
+  var relativePath = (arguments.length > 0) ? arguments[0] : ".";
+  relativePath = relativePath.replace(/\/+$/, "");
+  var splitPath = relativePath.split(/\/+/);
+  var fns = DIRECTORY_TREE.listFiles(splitPath);
+  if (fns) {
+    return fns.join("<br>");
+  }
+  else {
+    return relativePath + ": Not a directory"
+  }
+};
+
+var command_cd = function(arguments, flags) {
+  var relativePath = arguments[0];
+  relativePath = relativePath.replace(/\/+$/, "");
+  var splitPath = relativePath.split(/\/+/);
+  var success = DIRECTORY_TREE.changeDirectory(splitPath);
+  if (success) {
+    return "";
+  }
+  else {
+    return relativePath + ": Not a directory"
+  }
+};
+
 var command_whoami = function(arguments, flags) {
   return "visitor";
 };
@@ -126,6 +152,8 @@ var command_contact = function(arguments, flags) {
 };
 
 var commandToResponse = {
+  "ls": command_ls,
+  "cd": command_cd,
   "whoami": command_whoami,
   "greeting": command_greeting,
   "aboutme": command_aboutme,
