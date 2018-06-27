@@ -65,6 +65,9 @@ var command_greeting = function(arguments, flags) {
 };
 
 var command_open = function(arguments, flags) {
+  if (arguments.length == 0) {
+    return "No file given to open.";
+  }
   var relativePath = arguments[0];
   relativePath = relativePath.replace(/\/+$/, "");
   var splitPath = relativePath.split(/\/+/);
