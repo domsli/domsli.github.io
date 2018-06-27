@@ -2,6 +2,12 @@
   font-family: sans-serif;
 }
 
+#projects a {
+  text-decoration: none;
+  font-weight: bold;
+  color: navy;
+}
+
 #projects h1 {
   text-align: center;
 }
@@ -27,18 +33,6 @@
   font-size: 14pt;
 }
 
-#projects tr:nth-child(2n+0) .description {
-  background-color: #F1F1F1;
-}
-
-#projects tr:nth-child(2n+1) .description {
-  background-color: #E1ECEA;
-}
-
-#projects tr:nth-child(2n+1) .logo {
-  background-color: #F1F1F1;
-}
-
 #projects .logo {
   width: 25%;
   text-align: center;
@@ -46,4 +40,5 @@
 
 #projects .description {
   width: 75%;
+  background-color: #F1F1F1;
 }
