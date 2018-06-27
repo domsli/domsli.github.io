@@ -22,6 +22,10 @@ var command_aboutme = function(arguments, flags) {
     url: 'assets/res/aboutme_partial.html',
     dataType: 'text',
     success: function(text) {
+      // clean up existing opened viewer
+      if ($(".selected-link").length) {
+        closeViewerOnlyWithoutResizingTerminal();
+      }
       // create the viewer
       var aboutMeElem = $(text);
       aboutMeElem.attr("id", "aboutme");
@@ -42,6 +46,10 @@ var command_viewresume = function(arguments, flags) {
     return "Resume is already open."
   }
   else {
+    // clean up existing opened viewer
+    if ($(".selected-link").length) {
+      closeViewerOnlyWithoutResizingTerminal();
+    }
     // load the PDF to HTML
     $(".grid").append(
       "<object id='resume' class='col-1-2 ui-view' data='https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf' type='application/pdf' width='100%'' height='100%'>" +
@@ -93,6 +101,10 @@ var command_viewprojects = function(arguments, flags) {
     url: 'assets/res/projects_partial.html',
     dataType: 'text',
     success: function(text) {
+      // clean up existing opened viewer
+      if ($(".selected-link").length) {
+        closeViewerOnlyWithoutResizingTerminal();
+      }
       // create the viewer
       var projectsElem = $(text);
       projectsElem.attr("id", "projects");

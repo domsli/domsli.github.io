@@ -64,9 +64,6 @@ var clickLink = function(link_id, command) {
     doUserTriggeredAutomaticCommandSequence("closeviewer");
   }
   else {
-    if ($(".selected-link").length) {
-      closeViewerOnlyWithoutResizingTerminal();
-    }
     doUserTriggeredAutomaticCommandSequence(command);
   }
 };
