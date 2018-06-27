@@ -133,10 +133,11 @@ var setAsUserEditableCommandPrompt = function() {
           for (i = fullCommand.length-1; i >= 0; i--) {
             if (fullCommand[i] == " " || fullCommand[i] == "/") break;
           }
-          newFullCommand = fullCommand.substring(0, i+1) + suggestion;
+          newFullCommand = fullCommand.substring(0, i+1).replace(/ /gi, "&nbsp;") + suggestion + "&nbsp;";
         }
         // set the new command
         commandElem.html(newFullCommand);
+        console.log(commandElem.html());
         placeCaretAtEnd(commandElem[0]); // [0] to get HTML DOM element from JQuery Object
       }
       // many suggestions means that we should list them out
@@ -176,6 +177,7 @@ var setAsUserEditableCommandPrompt = function() {
           terminalElem.append(currentCommandPromptElem);
           // set it as editable
           var newCommandElem = currentCommandPromptElem.children(".command").first();
+          fullCommand = fullCommand.replace(/ /gi, "&nbsp;"); // spaces are not shown in html, so we need to change it to nbsp;
           newCommandElem.html(fullCommand);
           setAsUserEditableCommandPrompt(); // this will also place the caret at the end
         }
@@ -197,7 +199,7 @@ var getLastWordInFullCommand = function(fullCommand) {
 };
 
 var getLargestPrefix = function(words) {
-  var largestMatchIndex = 0;
+  var largestMatchIndex = -1;
   var index = 0;
   while (true) {
     var ch = words[0][index];
