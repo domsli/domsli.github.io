@@ -2,9 +2,25 @@ var command_ls = function(arguments, flags) {
   var relativePath = (arguments.length > 0) ? arguments[0] : ".";
   relativePath = relativePath.replace(/\/+$/, "");
   var splitPath = relativePath.split(/\/+/);
-  var fns = DIRECTORY_TREE.listFiles(splitPath);
+  var fnsAndIsDirectoryList = DIRECTORY_TREE.listFiles(splitPath);
+  var fns = fnsAndIsDirectoryList[0];
+  var isDirectoryList = fnsAndIsDirectoryList[1];
   if (fns) {
-    return fns.join("<br>");
+    var resp = "";
+    for (var i = 0; i < fns.length; i++) {
+      if (i != 0) {
+        resp += "<br>";
+      }
+      var isDirectory = isDirectoryList[i];
+      var fn = fns[i];
+      if (isDirectory) {
+        resp += "<span style='color:#00FFFF;font-weight:bold;'>" + fn + "/" + "</span>"
+      }
+      else {
+        resp += "<span style=';'>" + fn + "</span>";
+      }
+    }
+    return resp;
   }
   else {
     return relativePath + ": Not a directory"

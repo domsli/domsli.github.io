@@ -65,8 +65,9 @@ var Tree = function(root) {
     if (isDirectory) {
       self.currentNode.children.sort(); // modifies it, but no problem
       var fileNames = self.currentNode.children.map(child => child.name);
+      var isDirectoryList = self.currentNode.children.map(child => !child.actualFile);
       self.currentNode = savedCurrentNode;
-      return fileNames;
+      return [ fileNames, isDirectoryList ];
     }
     self.currentNode = savedCurrentNode;
     return null;
