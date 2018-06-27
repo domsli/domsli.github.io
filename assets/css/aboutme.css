@@ -1,0 +1,43 @@
+#aboutme * {
+  font-family: sans-serif;
+}
+
+#aboutme h1 {
+  text-align: center;
+}
+
+#aboutme table {
+  margin: auto;
+  width: 100%;
+}
+
+#aboutme tr {
+  height: 150px;
+}
+
+#aboutme .description {
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14pt;
+}
+
+#aboutme tr:nth-child(2n+0) .description {
+  background-color: #F1F1F1;
+}
+
+#aboutme tr:nth-child(2n+1) .description {
+  background-color: #E1ECEA;
+}
+
+#aboutme tr:nth-child(2n+1) .logo {
+  background-color: #F1F1F1;
+}
+
+#aboutme .logo {
+  width: 25%;
+  text-align: center;
+}
+
+#aboutme .description {
+  width: 75%;
+}

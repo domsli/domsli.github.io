@@ -1,21 +1,39 @@
 var command_whoami = function(arguments, flags) {
-  return "Hi there. My name is Denis. I am actually a really cool person. And I made this website, which is really cool";
+  return "visitor";
 };
 
-var command_whatisthis = function(arguments, flags) {
-  return "This is some site I made";
+var command_greeting = function(arguments, flags) {
+  return "Hi there! I'm Denis. Welcome to my personal website.";
 };
 
-var command_whyisthissocool = function(arguments, flags) {
-  return "Just because it is dude!";
-};
-
-var command_howcanibecool = function(arguments, flags) {
-  return "I don't know, just be a cooler guy";
-};
+var loadingAboutMe = false;
 
 var command_aboutme = function(arguments, flags) {
-  return "[...some stuff about me...]";
+  if ($("#aboutme").length) {
+    return "About Me is already open.";
+  }
+  // Make sure to disallow the user from loading the projects at the same time
+  if (loadingAboutMe) {
+    return "Currently loading the About Me...";
+  }
+  loadingAboutMe = true;
+  $.ajax({
+    type: 'GET',
+    url: 'assets/res/aboutme_partial.html',
+    dataType: 'text',
+    success: function(text) {
+      // create the viewer
+      var aboutMeElem = $(text);
+      aboutMeElem.attr("id", "aboutme");
+      aboutMeElem.addClass("col-1-2 ui-view html-view");
+      $(".grid").append(aboutMeElem);
+      $("#terminal").addClass("col-1-2");
+      // set the link as selected
+      setLinkAsSelected($("#aboutme-link"));
+      loadingAboutMe = false;
+    },
+  });
+  return "";
 };
 
 var command_viewresume = function(arguments, flags) {
@@ -89,19 +107,19 @@ var command_viewprojects = function(arguments, flags) {
   return "";
 };
 
-var command_contacthost = function(arguments, flags) {
-  return "School: denisli@mit.edu<br>Personal: denisli268@gmail.com";
+var command_contact = function(arguments, flags) {
+  return "You can reach me via:" + "<br>" +
+    "<a href='mailto:denisli268@gmail.com' target='_top'>&emsp;email</a>" + "<br>" +
+    "<a href='https://github.com/domsli' target='_blank'>&emsp;github</a>"
 };
 
 var commandToResponse = {
   "whoami": command_whoami,
-  "whatisthis": command_whatisthis,
-  "whyisthissocool": command_whyisthissocool,
-  "howcanibecool": command_howcanibecool,
+  "greeting": command_greeting,
   "aboutme": command_aboutme,
   "viewresume": command_viewresume,
   "viewprojects": command_viewprojects,
-  "contacthost": command_contacthost,
+  "contact": command_contact,
   "closeviewer": command_closeviewer,
 };
 

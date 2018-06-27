@@ -1,0 +1,49 @@
+#projects * {
+  font-family: sans-serif;
+}
+
+#projects h1 {
+  text-align: center;
+}
+
+#projects table {
+  margin: auto;
+  width: 100%;
+}
+
+#projects tr:not(.projectname-row) {
+  height: 150px;
+}
+
+#projects .projectname {
+  font-size: 18pt;
+  background-color: #FF91A4;
+  padding-left: 20px;
+}
+
+#projects .description {
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: 14pt;
+}
+
+#projects tr:nth-child(2n+0) .description {
+  background-color: #F1F1F1;
+}
+
+#projects tr:nth-child(2n+1) .description {
+  background-color: #E1ECEA;
+}
+
+#projects tr:nth-child(2n+1) .logo {
+  background-color: #F1F1F1;
+}
+
+#projects .logo {
+  width: 25%;
+  text-align: center;
+}
+
+#projects .description {
+  width: 75%;
+}

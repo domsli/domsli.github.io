@@ -39,10 +39,8 @@ var currentCommandPromptElem = null;
 var finishedIntro = false;
 
 var introSequenceCommands = [
-  "whoami",
-  "whatisthis",
-  "whyisthissocool",
-  "howcanibecool"
+  "greeting",
+  "contact",
 ];
 
 var processCommand = function(command, arguments, flags) {

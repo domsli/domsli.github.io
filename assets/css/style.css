@@ -119,12 +119,11 @@ hr {
 .html-view {
   background-color: white;
   border-radius: 10px;
-  padding: 10px 10px 10px 10px;
   max-height: 100%;
   overflow-y: auto;
   margin-top: 10px;
   margin-bottom: 10px;
-  height: calc(100% - 40px); /* -40px for margin and padding */
+  height: calc(100% - 20px); /* -20px for margin and padding */
 }
 
 .command-prompt, .response {
@@ -143,6 +142,11 @@ hr {
 
 .response {
   color: white;
+}
+
+.response a {
+  color: red;
+  text-decoration: none;
 }
 
 .command {
