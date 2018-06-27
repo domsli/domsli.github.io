@@ -1,5 +1,5 @@
 body {
-  background-color: #1E1E1E;
+  background-color: #353839; /*#1E1E1E;*/
 }
 
 /* https://stackoverflow.com/questions/35348057/css-div-fill-remaining-height */
@@ -82,7 +82,7 @@ hr {
 }
 
 .navigation-bar span:not(.selected-link):hover {
-  background-color: black;
+  background-color: #252525;
   color: orange;
 }
 
@@ -102,7 +102,7 @@ hr {
 }
 
 #terminal {
-  background-color: black;
+  background-color: #414A4C;
   border-radius: 10px;
   padding: 10px 10px 10px 10px;
   max-height: 100%;
@@ -146,6 +146,7 @@ hr {
 
 .response a {
   color: red;
+  font-weight: bold;
   text-decoration: none;
 }
 
