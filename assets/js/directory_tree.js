@@ -5,6 +5,21 @@ var Tree = function(root) {
   this.currentNode = root;
 
   /**
+   * Returns the name of the current directory.
+   */
+  this.currentDirectory = function() {
+    var name = "";
+    var parts = [];
+    var currentTraversalNode = self.currentNode;
+    while (currentTraversalNode) {
+      parts.push(currentTraversalNode.name);
+      currentTraversalNode = currentTraversalNode.parent;
+    }
+    parts = parts.reverse();
+    return parts.join("/");
+  };
+
+  /**
    * Changes the current node of the tree. Returns whether or not
    * the change was successful. Changing back to the same directory
    * counts as a success.

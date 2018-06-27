@@ -52,7 +52,8 @@ var processCommand = function(command, arguments, flags) {
   // make the current command prompt no longer editable
   unsetAsUserEditableCommandPrompt();
   // create another prompt
-  currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:~$");
+  var currentDir = DIRECTORY_TREE.currentDirectory() 
+  currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:" + currentDir + "$");
   terminalElem.append(currentCommandPromptElem);
   // set it as editable
   setAsUserEditableCommandPrompt();
