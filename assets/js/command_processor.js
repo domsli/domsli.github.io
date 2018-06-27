@@ -1,3 +1,8 @@
+var command_clear = function(arguments, flags) {
+  $("#terminal").empty();
+  return "";
+};
+
 var command_ls = function(arguments, flags) {
   var relativePath = (arguments.length > 0) ? arguments[0] : ".";
   relativePath = relativePath.replace(/\/+$/, "");
@@ -168,6 +173,7 @@ var command_contact = function(arguments, flags) {
 };
 
 var commandToResponse = {
+  "clear": command_clear,
   "ls": command_ls,
   "cd": command_cd,
   "whoami": command_whoami,
