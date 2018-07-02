@@ -106,7 +106,9 @@ var setAsUserEditableCommandPrompt = function() {
       processCommand(command, arguments);
       consecutiveTabbedTimesWithMultipleSuggestions = 0;
     }
-    else if (e.keyCode == 9) { // tab
+  });
+  commandElem.on("keydown", function(e) {
+    if (e.keyCode == 9) { // tab
       e.preventDefault();
       var fullCommand = commandElem.html();
       fullCommand = fullCommand.replace(/&nbsp;/gi, " "); // replace since html() converts space to &nbsp sometimes
@@ -124,7 +126,7 @@ var setAsUserEditableCommandPrompt = function() {
         var newFullCommand;
         // if the last character is a space, then we just append the suggestion on
         if (fullCommand[fullCommand.length-1] == " ") {
-          newFullCommand = fullCommand + suggestion;
+          newFullCommand = fullCommand + suggestion + "&nbsp";
         }
         // if the last character is not a space, then we replace it with the suggestion
         else {
@@ -137,7 +139,6 @@ var setAsUserEditableCommandPrompt = function() {
         }
         // set the new command
         commandElem.html(newFullCommand);
-        console.log(commandElem.html());
         placeCaretAtEnd(commandElem[0]); // [0] to get HTML DOM element from JQuery Object
       }
       // many suggestions means that we should list them out
@@ -156,7 +157,7 @@ var setAsUserEditableCommandPrompt = function() {
           // there is an update if the prefix is not same as last word
           else {
             // update the command
-            newFullCommand = fullCommand.substring(0, fullCommand.length - lastWord.length) + largestPrefix;
+            newFullCommand = fullCommand.substring(0, fullCommand.length - lastWord.length).replace(/ /gi, "&nbsp;") + largestPrefix;
             commandElem.html(newFullCommand);
             placeCaretAtEnd(commandElem[0]);
             // reset tabbed times
