@@ -86,6 +86,9 @@ var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags
   processCommand(command, arguments, flags);
 };
 
+var currentSavedCommand = null; // command saved when flipping through history
+var commandHistoryIndex = -1; // index starts from the end of the history buffer (e.g. 0 means last element)
+var commandHistory = [];
 var consecutiveTabbedTimesWithMultipleSuggestions = 0;
 var setAsUserEditableCommandPrompt = function() {
   var commandElem = currentCommandPromptElem.children(".command").first();
@@ -98,12 +101,18 @@ var setAsUserEditableCommandPrompt = function() {
     if ((e.keyCode == 10 || e.keyCode == 13)) { // enter
       e.preventDefault();
       var fullCommand = commandElem.html();
+      // update history
+      commandHistory.push(fullCommand); // push the version with &nbsp; so we can just replace html
+      commandHistoryIndex = -1;
+      currentSavedCommand = null;
+      // process the command
       fullCommand = fullCommand.replace(/&nbsp;/gi, " "); // replace since html() converts space to &nbsp sometimes
       fullCommand = $.trim(fullCommand);
       var args = fullCommand.split(/\s+/);
       var command = args[0];
       var arguments = args.slice(1);
       processCommand(command, arguments);
+      // update tabbing info
       consecutiveTabbedTimesWithMultipleSuggestions = 0;
     }
   });
@@ -117,7 +126,6 @@ var setAsUserEditableCommandPrompt = function() {
       // no suggestions means we should do nothing
       if (suggestions.length == 0) {
         consecutiveTabbedTimesWithMultipleSuggestions = 0;
-        // no-op
       }
       // one suggestion means we should apply the suggestion
       else if (suggestions.length == 1) {
@@ -184,10 +192,47 @@ var setAsUserEditableCommandPrompt = function() {
         }
       }
     }
+    else if (e.keyCode == 38) { // up arrow
+      e.preventDefault();
+      if (commandHistoryIndex >= commandHistory.length - 1) {
+        // no-op
+      }
+      else { // index is in a range where you can still fetch more history
+        commandHistoryIndex++;
+        if (commandHistoryIndex == 0) {
+          currentSavedCommand = commandElem.html(); // directly save the html, so we don't need to process it later
+        }
+        updateCommandElemWithCommandAtHistoryIndex(commandElem);
+      }
+      consecutiveTabbedTimesWithMultipleSuggestions = 0;
+    }
+    else if (e.keyCode == 40) { // down arrow
+      e.preventDefault();
+      if (commandHistoryIndex < 0) {
+        // no-op
+      }
+      else { // index is in a range where you can get more recent history
+        commandHistoryIndex--;
+        if (commandHistoryIndex == -1) {
+          commandElem.html(currentSavedCommand);
+          placeCaretAtEnd(commandElem[0]);
+        }
+        else {
+          updateCommandElemWithCommandAtHistoryIndex(commandElem);
+        }
+      }
+      consecutiveTabbedTimesWithMultipleSuggestions = 0;
+    }
     else {
       consecutiveTabbedTimesWithMultipleSuggestions = 0;
     }
   });
+  placeCaretAtEnd(commandElem[0]);
+};
+
+var updateCommandElemWithCommandAtHistoryIndex = function(commandElem) {
+  var fullCommand = commandHistory[commandHistory.length-1-commandHistoryIndex];
+  commandElem.html(fullCommand);
   placeCaretAtEnd(commandElem[0]);
 };
 
