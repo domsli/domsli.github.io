@@ -1,0 +1,17 @@
+#starlogo .container {
+  margin: 0 20px;
+}
+
+#starlogo * {
+  font-family: sans-serif;
+}
+
+#starlogo a {
+  text-decoration: none;
+  font-weight: bold;
+  color: navy;
+}
+
+#starlogo h1 {
+  text-align: center;
+}

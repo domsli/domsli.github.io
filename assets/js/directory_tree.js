@@ -142,12 +142,10 @@ DIRECTORY_TREE = new Tree(root);
 var projectsDir = new TreeNode("projects");
 var aboutMeFile = new TreeNode("aboutme.html", "assets/res/aboutme_partial.html", "aboutme", "aboutme-link");
 var projectsFile = new TreeNode("projects.html", "assets/res/projects_partial.html", "projects", "projects-link");
-var resumeFile = new TreeNode("resume.pdf", "https://upload.wikimedia.org/wikipedia/commons/c/cc/Resume.pdf", "resume", "resume-link");
 
 root.addChild(projectsDir);
 root.addChild(aboutMeFile);
 root.addChild(projectsFile);
-root.addChild(resumeFile);
 
 // third level
 var starlogoFile = new TreeNode("starlogo.html", "assets/res/starlogo_partial.html", "starlogo");
