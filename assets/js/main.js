@@ -1,36 +1,7 @@
-$(document).ready(function() {
-  terminalElem = $("#terminal");
-
-  currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:~$");
-  terminalElem.append(currentCommandPromptElem);
-
-  // Show the introduction
-  var index = 0;
-  var showIntro = function() {
-    command = introSequenceCommands[index];
-    doAutomaticCommandSequence(command,
-      function() {
-        index++;
-        if (index != introSequenceCommands.length) {
-          // still doing the intro
-          currentCursorElem.remove();
-          setTimeout(showIntro, 500);
-        }
-        else {
-          // post-intro handling
-          currentCursorElem.remove();
-          setAsUserEditableCommandPrompt();
-
-          terminalElem.click(function() {
-            var commandElem = currentCommandPromptElem.children(".command").first();
-            commandElem.focus();
-          });
-          finishedIntro = true;
-        }
-      });
-  }
-  showIntro();
-});
+import $ from "jquery";
+import { DIRECTORY_TREE } from "./directory_tree.js";
+import { getResponseFunction } from "./command_processor.js";
+import { getAutocompleteSuggestions } from "./autocomplete.js";
 
 // Global variables
 var terminalElem = null;
@@ -43,9 +14,9 @@ var introSequenceCommands = [
   "contact",
 ];
 
-var processCommand = function(command, arguments, flags) {
+var processCommand = function(command, args, flags) {
   // get response from command 
-  var response = getResponseFunction(command)(arguments, flags);
+  var response = getResponseFunction(command)(args, flags);
   // create a response element
   var responseElem = createResponseElem(response);
   terminalElem.append(responseElem);
@@ -69,7 +40,7 @@ var clickLink = function(link_id, filePath) {
   }
 };
 
-var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags) {
+var doUserTriggeredAutomaticCommandSequence = function(command, args, flags) {
   if (!finishedIntro) {
     // show popup warning to let the user know they cannot do anything
     var stopIntroElem = $("#stop-intro");
@@ -81,9 +52,9 @@ var doUserTriggeredAutomaticCommandSequence = function(command, arguments, flags
     return;
   }
   var commandElem = currentCommandPromptElem.children(".command").first();
-  var argumentString = arguments ? " " + arguments.join(" ") : "";
+  var argumentString = args ? " " + args.join(" ") : "";
   commandElem.html(command + argumentString);
-  processCommand(command, arguments, flags);
+  processCommand(command, args, flags);
 };
 
 var currentSavedCommand = null; // command saved when flipping through history
@@ -108,10 +79,10 @@ var setAsUserEditableCommandPrompt = function() {
       // process the command
       fullCommand = fullCommand.replace(/&nbsp;/gi, " "); // replace since html() converts space to &nbsp sometimes
       fullCommand = $.trim(fullCommand);
-      var args = fullCommand.split(/\s+/);
-      var command = args[0];
-      var arguments = args.slice(1);
-      processCommand(command, arguments);
+      var parts = fullCommand.split(/\s+/);
+      var command = parts[0];
+      var args = parts.slice(1);
+      processCommand(command, args);
       // update tabbing info
       consecutiveTabbedTimesWithMultipleSuggestions = 0;
     }
@@ -341,8 +312,8 @@ var typeToCommandPrompt = function(text, callback=noop) {
   var commandElem = currentCommandPromptElem.children(".command").first();
   currentCursorElem = createCursorElem();
   currentCommandPromptElem.append(currentCursorElem);
-  numChars = 1;
-  progress = 0;
+  var numChars = 1;
+  var progress = 0;
   var timeout = 20;
   var helper = function() {
     var stopPoint = Math.min(text.length, progress + numChars);
@@ -361,3 +332,40 @@ var typeToCommandPrompt = function(text, callback=noop) {
 };
 
 var noop = function() { }
+
+window.clickLink = clickLink;
+window.doUserTriggeredAutomaticCommandSequence = doUserTriggeredAutomaticCommandSequence;
+
+$(document).ready(function() {
+  terminalElem = $("#terminal");
+
+  currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:~$");
+  terminalElem.append(currentCommandPromptElem);
+
+  // Show the introduction
+  var index = 0;
+  var showIntro = function() {
+    var command = introSequenceCommands[index];
+    doAutomaticCommandSequence(command,
+      function() {
+        index++;
+        if (index != introSequenceCommands.length) {
+          // still doing the intro
+          currentCursorElem.remove();
+          setTimeout(showIntro, 500);
+        }
+        else {
+          // post-intro handling
+          currentCursorElem.remove();
+          setAsUserEditableCommandPrompt();
+
+          terminalElem.click(function() {
+            var commandElem = currentCommandPromptElem.children(".command").first();
+            commandElem.focus();
+          });
+          finishedIntro = true;
+        }
+      });
+  }
+  showIntro();
+});

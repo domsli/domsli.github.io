@@ -1,3 +1,6 @@
+import { DIRECTORY_TREE } from "./directory_tree.js";
+import { commandToResponse } from "./command_processor.js";
+
 var getAutocompleteSuggestions = function(fullCommand) {
   var groups = fullCommand.split(/\s+/);
   for (var i = 0; i < groups.length; i++) {
@@ -40,3 +43,5 @@ var getAutocompleteSuggestions = function(fullCommand) {
   // did not find non-empty, so just return commands
   return Object.keys(commandToResponse);
 };
+
+export { getAutocompleteSuggestions };

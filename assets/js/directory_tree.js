@@ -136,7 +136,7 @@ var TreeNode = function(name, actualFile=null, htmlID=null, linkID=null) {
 
 // first level
 var root = new TreeNode("~");
-DIRECTORY_TREE = new Tree(root);
+export const DIRECTORY_TREE = new Tree(root);
 
 // second level
 var projectsDir = new TreeNode("projects");

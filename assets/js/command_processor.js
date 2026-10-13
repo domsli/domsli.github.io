@@ -1,18 +1,21 @@
-var command_touch = function(arguments, flags) {
+import $ from "jquery";
+import { DIRECTORY_TREE } from "./directory_tree.js";
+
+var command_touch = function(args, flags) {
   return "Permission denied: no write access.";
 };
 
-var command_mkdir = function(arguments, flags) {
+var command_mkdir = function(args, flags) {
   return "Permission denied: no write access.";
 };
 
-var command_clear = function(arguments, flags) {
+var command_clear = function(args, flags) {
   $("#terminal").empty();
   return "";
 };
 
-var command_ls = function(arguments, flags) {
-  var relativePath = (arguments.length > 0) ? arguments[0] : ".";
+var command_ls = function(args, flags) {
+  var relativePath = (args.length > 0) ? args[0] : ".";
   relativePath = relativePath.replace(/\/+$/, "");
   var splitPath = relativePath.split(/\/+/);
   var fnsAndIsDirectoryList = DIRECTORY_TREE.listFiles(splitPath);
@@ -40,11 +43,11 @@ var command_ls = function(arguments, flags) {
   }
 };
 
-var command_cd = function(arguments, flags) {
-  if (arguments.length == 0) {
+var command_cd = function(args, flags) {
+  if (args.length == 0) {
     return "";
   }
-  var relativePath = arguments[0];
+  var relativePath = args[0];
   relativePath = relativePath.replace(/\/+$/, "");
   var splitPath = relativePath.split(/\/+/);
   var success = DIRECTORY_TREE.changeDirectory(splitPath);
@@ -56,19 +59,19 @@ var command_cd = function(arguments, flags) {
   }
 };
 
-var command_whoami = function(arguments, flags) {
+var command_whoami = function(args, flags) {
   return "visitor";
 };
 
-var command_greeting = function(arguments, flags) {
+var command_greeting = function(args, flags) {
   return "Hi there! I'm Denis. Welcome to my personal website.";
 };
 
-var command_open = function(arguments, flags) {
-  if (arguments.length == 0) {
+var command_open = function(args, flags) {
+  if (args.length == 0) {
     return "No file given to open.";
   }
-  var relativePath = arguments[0];
+  var relativePath = args[0];
   relativePath = relativePath.replace(/\/+$/, "");
   var splitPath = relativePath.split(/\/+/);
   var fileData = DIRECTORY_TREE.getFile(splitPath);
@@ -157,7 +160,7 @@ var openPDF = function(fileData) {
   }
 };
 
-var command_closeviewer = function(arguments, flags) {
+var command_closeviewer = function(args, flags) {
   if ($(".ui-view").length) {
     closeViewerOnlyWithoutResizingTerminal();
     $("#terminal").removeClass("col-1-2");
@@ -178,7 +181,7 @@ var closeViewerOnlyWithoutResizingTerminal = function() {
   return "";
 }
 
-var command_contact = function(arguments, flags) {
+var command_contact = function(args, flags) {
   return "You can reach me via:" + "<br>" +
     "<a href='mailto:denisli268@gmail.com' target='_top'>&emsp;email</a>" + "<br>" +
     "<a href='https://github.com/domsli' target='_blank'>&emsp;github</a>"
@@ -218,3 +221,5 @@ var unsetSelected = function() {
   $(".selected-link img").remove();
   $(".selected-link").removeClass("selected-link");
 };
+
+export { commandToResponse, getResponseFunction };
