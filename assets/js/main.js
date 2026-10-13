@@ -333,10 +333,10 @@ var typeToCommandPrompt = function(text, callback=noop) {
 
 var noop = function() { }
 
-window.clickLink = clickLink;
-window.doUserTriggeredAutomaticCommandSequence = doUserTriggeredAutomaticCommandSequence;
-
-$(document).ready(function() {
+var startTerminal = function() {
+  if (terminalElem) {
+    return;
+  }
   terminalElem = $("#terminal");
 
   currentCommandPromptElem = createCommandPromptElem("visitor@domsli.github.io:~$");
@@ -368,4 +368,6 @@ $(document).ready(function() {
       });
   }
   showIntro();
-});
+};
+
+export { clickLink, doUserTriggeredAutomaticCommandSequence, startTerminal };

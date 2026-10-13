@@ -213,12 +213,11 @@ var getResponseFunction = function(command) {
 
 var setLinkAsSelected = function(linkElem) {
   linkElem.addClass("selected-link");
-  var closeButtonHtmlString = "<img class='close-button' src='assets/res/close_symbol.png' style='position:absolute; top: 5px; right: 5px; height:20px;'/>";
-  linkElem.html(linkElem.html() + closeButtonHtmlString);
+  linkElem.attr("aria-expanded", "true");
 };
 
 var unsetSelected = function() {
-  $(".selected-link img").remove();
+  $(".selected-link").attr("aria-expanded", "false");
   $(".selected-link").removeClass("selected-link");
 };
 

@@ -6,25 +6,7 @@
   <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon">
 </head>
 <body>
-
-<nav class="navigation-bar">
-  <h1>Denis Li</h1>
-  <ul class="menu-right">
-    <span id="aboutme-link" onclick="clickLink('aboutme-link', '~/aboutme.html')">About Me</span>
-    <span id="projects-link" onclick="clickLink('projects-link', '~/projects.html')">Projects</span>
-    <span id="contact-link" onclick="doUserTriggeredAutomaticCommandSequence('contact')">Contact</span>
-  </ul>
-</nav>
-
-<hr>
-
-<div style="display: none;" id="stop-intro"><img src="/assets/res/warning_symbol.png" height="50"/><span>Let me finish typing!</span></div>
-
-<div class="grid">
-  <div id="terminal">
-  </div>
-</div>
-
-<script type="module" src="/src/main.jsx"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
