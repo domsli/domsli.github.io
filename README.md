@@ -27,4 +27,13 @@ npm run preview
 
 Images in `public/` are copied through as-is. CSS, JavaScript, and the page HTML are bundled.
 
-GitHub Pages serves this repository from source, not from `dist/`. Publishing the compiled site means deploying the contents of `dist/`.
+## GitHub Pages
+
+This repo is a user site at https://domsli.github.io/. Pushing to `master` runs a GitHub Action that builds the site and deploys `dist/`.
+
+One-time setup in the GitHub repo:
+
+1. Open **Settings → Pages**
+2. Under **Build and deployment → Source**, choose **GitHub Actions**
+
+After that, each push to `master` updates the live site. You can also run the **Deploy to GitHub Pages** workflow manually from the Actions tab.
