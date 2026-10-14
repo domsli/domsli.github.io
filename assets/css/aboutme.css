@@ -3,7 +3,7 @@
 }
 
 #aboutme h1 {
-  margin: 28px 0 4px;
+  margin: 28px 0 20px;
   font-size: 2.5rem;
   line-height: 1.15;
 }
@@ -14,13 +14,14 @@
 }
 
 #aboutme td {
-  vertical-align: middle;
-  padding: 26px 8px;
-  border-bottom: 1px solid #e6e1d8;
+  vertical-align: top;
+  padding: 28px 8px;
+  border-top: 1px solid #e6e1d8;
 }
 
-#aboutme tr:last-child td {
-  border-bottom: none;
+#aboutme tr:first-child td {
+  padding-top: 8px;
+  border-top: none;
 }
 
 #aboutme .logo {
