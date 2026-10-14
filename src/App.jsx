@@ -50,7 +50,7 @@ export default function App() {
           <ul>
             <li><a href="mailto:denisli268@gmail.com">email</a></li>
             <li><a href="https://github.com/domsli" target="_blank" rel="noreferrer">github</a></li>
-            <li><a href="https://www.linkedin.com/in/denis-li-16723721" target="_blank" rel="noreferrer">LinkedIn</a></li>
+            <li><a href="https://www.linkedin.com/in/denis-li-16723721" target="_blank" rel="noreferrer">linkedin</a></li>
           </ul>
         </section>
       )}
