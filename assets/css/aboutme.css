@@ -1,43 +1,51 @@
 #aboutme * {
-  font-family: sans-serif;
+  font-family: "Inter Variable", system-ui, sans-serif;
 }
 
 #aboutme h1 {
-  text-align: center;
+  margin: 28px 0 4px;
+  font-size: 2.5rem;
+  line-height: 1.15;
 }
 
 #aboutme table {
-  margin: auto;
   width: 100%;
+  border-collapse: collapse;
 }
 
-#aboutme tr {
-  height: 150px;
+#aboutme td {
+  vertical-align: middle;
+  padding: 26px 8px;
+  border-bottom: 1px solid #e6e1d8;
 }
 
-#aboutme .description {
-  padding-left: 15px;
-  padding-right: 15px;
-  font-size: 14pt;
-}
-
-#aboutme tr:nth-child(2n+0) .description {
-  background-color: #F1F1F1;
-}
-
-#aboutme tr:nth-child(2n+1) .description {
-  background-color: #E1ECEA;
-}
-
-#aboutme tr:nth-child(2n+1) .logo {
-  background-color: #F1F1F1;
+#aboutme tr:last-child td {
+  border-bottom: none;
 }
 
 #aboutme .logo {
-  width: 25%;
+  width: 128px;
   text-align: center;
 }
 
+#aboutme .logo img {
+  width: auto;
+  max-width: 92px;
+  height: auto;
+  vertical-align: middle;
+}
+
 #aboutme .description {
-  width: 75%;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: #2c2926;
+}
+
+#aboutme ul {
+  margin: 8px 0 0;
+  padding-left: 1.15em;
+}
+
+#aboutme li + li {
+  margin-top: 4px;
 }

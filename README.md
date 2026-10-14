@@ -1,6 +1,6 @@
 # domsli.github.io
 
-Personal site, built with Vite and React. The page shell is `src/App.jsx`. The terminal still runs from the scripts in `assets/js`, started after the app mounts.
+Personal site, built with Vite and React. The page opens on About Me. Projects and Contact are the other tabs.
 
 ## Develop
 
@@ -25,6 +25,6 @@ This writes the compiled site to `dist/`. To serve that folder locally:
 npm run preview
 ```
 
-Images and HTML partials in `public/` are copied through as-is. CSS and JavaScript are bundled.
+Images in `public/` are copied through as-is. CSS, JavaScript, and the page HTML are bundled.
 
 GitHub Pages serves this repository from source, not from `dist/`. Publishing the compiled site means deploying the contents of `dist/`.

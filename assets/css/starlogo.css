@@ -3,13 +3,13 @@
 }
 
 #starlogo * {
-  font-family: sans-serif;
+  font-family: "Inter Variable", system-ui, sans-serif;
 }
 
 #starlogo a {
-  text-decoration: none;
-  font-weight: bold;
-  color: navy;
+  color: #8f4b28;
+  font-weight: 560;
+  text-underline-offset: 3px;
 }
 
 #starlogo h1 {

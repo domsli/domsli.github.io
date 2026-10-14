@@ -1,81 +1,59 @@
-import { useEffect } from "react";
-import {
-  clickLink,
-  doUserTriggeredAutomaticCommandSequence,
-  startTerminal,
-} from "../assets/js/main.js";
+import { useState } from "react";
+import aboutMeHtml from "./content/aboutme.html?raw";
+import projectsHtml from "./content/projects.html?raw";
+
+const tabs = [
+  { id: "aboutme", label: "About Me", html: aboutMeHtml },
+  { id: "projects", label: "Projects", html: projectsHtml },
+  { id: "contact", label: "Contact" },
+];
 
 export default function App() {
-  useEffect(() => {
-    startTerminal();
-  }, []);
+  const [tab, setTab] = useState("aboutme");
+  const page = tabs.find((item) => item.id === tab);
 
   return (
     <>
       <nav className="navigation-bar">
         <h1>Denis Li</h1>
-        <ul className="menu-right">
-          <li>
-            <button
-              type="button"
-              id="aboutme-link"
-              className="menu-link"
-              aria-controls="aboutme"
-              aria-expanded="false"
-              onClick={() => clickLink("aboutme-link", "~/aboutme.html")}
-            >
-              About Me
-            </button>
-            <button
-              type="button"
-              className="close-button"
-              aria-label="Close About Me"
-              onClick={() => clickLink("aboutme-link", "~/aboutme.html")}
-            >
-              ×
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              id="projects-link"
-              className="menu-link"
-              aria-controls="projects"
-              aria-expanded="false"
-              onClick={() => clickLink("projects-link", "~/projects.html")}
-            >
-              Projects
-            </button>
-            <button
-              type="button"
-              className="close-button"
-              aria-label="Close Projects"
-              onClick={() => clickLink("projects-link", "~/projects.html")}
-            >
-              ×
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              id="contact-link"
-              className="menu-link"
-              onClick={() => doUserTriggeredAutomaticCommandSequence("contact")}
-            >
-              Contact
-            </button>
-          </li>
+        <ul className="menu-right" role="tablist">
+          {tabs.map((item) => (
+            <li key={item.id} role="presentation">
+              <button
+                type="button"
+                id={`${item.id}-tab`}
+                className={tab === item.id ? "menu-link selected-link" : "menu-link"}
+                role="tab"
+                aria-selected={tab === item.id}
+                aria-controls={item.id}
+                onClick={() => setTab(item.id)}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
         </ul>
       </nav>
 
-      <div id="stop-intro" style={{ display: "none" }}>
-        <img src="/assets/res/warning_symbol.png" height="50" alt="" />
-        <span>Let me finish typing!</span>
-      </div>
-
-      <div className="grid">
-        <div id="terminal" />
-      </div>
+      {page.html ? (
+        <div
+          id={page.id}
+          className="page"
+          role="tabpanel"
+          aria-labelledby={`${page.id}-tab`}
+          dangerouslySetInnerHTML={{ __html: page.html }}
+        />
+      ) : (
+        <section id="contact" className="page" role="tabpanel" aria-labelledby="contact-tab">
+          <h1>Contact</h1>
+          <p>You can reach me via:</p>
+          <ul>
+            <li><a href="mailto:denisli268@gmail.com">email</a></li>
+            <li><a href="https://github.com/domsli" target="_blank" rel="noreferrer">github</a></li>
+            <li><a href="https://www.linkedin.com/in/denis-li-16723721" target="_blank" rel="noreferrer">LinkedIn</a></li>
+          </ul>
+        </section>
+      )}
     </>
   );
 }

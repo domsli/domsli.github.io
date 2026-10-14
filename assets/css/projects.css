@@ -1,44 +1,59 @@
 #projects * {
-  font-family: sans-serif;
-}
-
-#projects a {
-  text-decoration: none;
-  font-weight: bold;
-  color: navy;
+  font-family: "Inter Variable", system-ui, sans-serif;
 }
 
 #projects h1 {
-  text-align: center;
+  margin: 28px 0 8px;
+  font-size: 2.5rem;
+  line-height: 1.15;
 }
 
 #projects table {
-  margin: auto;
   width: 100%;
+  border-collapse: collapse;
 }
 
-#projects tr:not(.projectname-row) {
-  height: 150px;
+#projects td {
+  vertical-align: middle;
+  padding: 22px 8px;
 }
 
 #projects .projectname {
-  font-size: 18pt;
-  background-color: #FF91A4;
-  padding-left: 20px;
+  margin-top: 12px;
+  padding: 0;
+  background: none;
+  font-size: 1.7rem;
+  line-height: 1.2;
 }
 
-#projects .description {
-  padding-left: 15px;
-  padding-right: 15px;
-  font-size: 14pt;
+#projects .projectname-row td {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+#projects .projectname-row + tr td {
+  padding-top: 12px;
+  border-bottom: 1px solid #e6e1d8;
+}
+
+#projects tr:last-child td {
+  border-bottom: none;
 }
 
 #projects .logo {
-  width: 25%;
+  width: 128px;
   text-align: center;
 }
 
+#projects .logo img {
+  width: auto;
+  max-width: 92px;
+  height: auto;
+  vertical-align: middle;
+}
+
 #projects .description {
-  width: 75%;
-  background-color: #F1F1F1;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: #2c2926;
 }
